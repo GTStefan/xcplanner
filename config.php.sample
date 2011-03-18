@@ -15,3 +15,5 @@ $get_elevation = "get_elevation_srtm";
 
 if (function_exists("date_default_timezone_set"))
     date_default_timezone_set("UTC");
+
+?>
