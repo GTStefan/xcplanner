@@ -17,9 +17,9 @@
 <?php foreach ($route["turnpoints"] as $turnpoint) : ?>
 		<rtept lat="<?php echo $turnpoint["lat"]?>" lon="<?php echo $turnpoint["lng"]?>">
 <?php if (isset($turnpoint["ele"])) : ?>
-		<ele><?php echo $turnpoint["ele"];?></ele>
+			<ele><?php echo $turnpoint["ele"];?></ele>
 <?php endif; ?>
-    <name><?php echo view_escape($turnpoint["name"]); ?></name>
+			<name><?php echo view_escape($turnpoint["name"]); ?></name>
 		</rtept>
 <?php endforeach; ?>
 <?php if (isset($route["circuit"])) : ?>
