@@ -1,4 +1,4 @@
-<?php if (!isset($rendering)) die();?><?xml version="1.0" encoding="utf-8"?>
+<?php if (!isset($rendering)) die();?><?php echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"?>
 <kml xmlns="http://earth.google.com/kml/2.0">
 	<Folder>
 		<name><?php printf("%s %s %s",

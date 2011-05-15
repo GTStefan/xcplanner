@@ -1,11 +1,11 @@
-<?php if (!isset($rendering)) die();?><?xml version="1.0" encoding="utf-8"?>
+<?php if (!isset($rendering)) die();?><?php echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"?>
 <gpx version="1.0" creator="http://github.com/twpayne/xcplanner/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/0" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd">
 <?php foreach ($route["turnpoints"] as $turnpoint) : ?>
 	<wpt lat="<?php echo $turnpoint["lat"]?>" lon="<?php echo $turnpoint["lng"]?>">
 <?php if (isset($turnpoint["ele"])) : ?>
 		<ele><?php echo $turnpoint["ele"];?></ele>
 <?php endif; ?>
-    <name><?php echo view_escape($turnpoint["name"]); ?></name>
+		<name><?php echo view_escape($turnpoint["name"]); ?></name>
 	</wpt>
 <?php endforeach; ?>
 	<rte>
