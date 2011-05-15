@@ -1008,6 +1008,7 @@ function XCUpdateRoute() {
 	};
 	$("gpx").writeAttribute({href: "download.php?format=gpx&route=" + escape(JSON.stringify(route))});
 	$("kml").writeAttribute({href: "download.php?format=kml&route=" + escape(JSON.stringify(route))});
+	$("wpt").writeAttribute({href: "download.php?format=wpt&route=" + escape(JSON.stringify(route))});
 }
 
 function XCUnload() {

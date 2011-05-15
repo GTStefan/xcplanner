@@ -38,6 +38,7 @@
 			<a id="link">link</a>
 			<a id="gpx">gpx</a>
 			<a id="kml">kml</a>
+			<a id="wpt">wpt</a>
 			<hr/>
 			<b>Preferences:</b>
 			<table>

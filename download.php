@@ -37,4 +37,14 @@ if ($_GET["format"] == "gpx") {
 		header("Content-Disposition: inline; filename=\"$filename.kml\"");
 		echo view_render("download_kml.tpl", array('route' => $route));
 	}
+} elseif ($_GET["format"] == "wpt") {
+	if ($DEBUG) {
+		print "<pre>";
+		print htmlentities(view_render("download_kml.tpl", array('route' => $route)));
+		print "</pre>";
+	} else {
+		header("Content-Type: application/octet-stream");
+		header("Content-Disposition: inline; filename=\"$filename.wpt\"");
+		echo view_render("download_wpt.tpl", array('route' => $route));
+	}
 }
