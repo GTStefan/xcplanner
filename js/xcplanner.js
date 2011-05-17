@@ -789,6 +789,7 @@ function LivesharingRefreshPositions() {
 		method: 'get',
 		onSuccess: function(transport) {
 			var data = transport.responseJSON;
+			var needUpdate = false;
 			
 			if ($("flightType").value != data.flightType) {
 				$("flightType").value = data.flightType;
@@ -799,6 +800,7 @@ function LivesharingRefreshPositions() {
 				var latlng = marker.getLatLng();
 				if (latlng.x != data.turnpointMarkers[i].x || latlng.y != data.turnpointMarkers[i].y) {
 					marker.setLatLng(new GLatLng(data.turnpointMarkers[i].y, data.turnpointMarkers[i].x));
+					needUpdate = true;
 				}
 			});
 			
@@ -806,11 +808,13 @@ function LivesharingRefreshPositions() {
 				var latlng = startMarker.getLatLng();
 				if (latlng.x != data.startMarker.x || latlng.y != data.startMarker.y) {
 					startMarker.setLatLng(new GLatLng(data.startMarker.y, data.startMarker.x));
+					needUpdate = true;
 				}
 			}
 			
-			XCUpdateRoute();
-			XCUpdateElevations();
+			if (needUpdate) {
+				XCUpdateRoute();
+			}
 		}
 	});
 }
