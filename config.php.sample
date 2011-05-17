@@ -11,6 +11,7 @@ $DEFAULT_START = null;
 $ELEVATION = false;
 $LEONARDO = false;
 $XCONTEST = false;
+$LIVESHARING = true;
 $get_elevation = "get_elevation_srtm";
 
 if (function_exists("date_default_timezone_set"))

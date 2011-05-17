@@ -22,7 +22,7 @@
 			<input type="submit" onclick="XCGo();" value="Go" title="Center the map on this location"/>
 			<input type="submit" onclick="XCHere();" value="Reset" title="Place the turnpoints on the map" /><br/>
 			<hr/>
-			<select name="flightType" id="flightType" onchange="XCUpdateFlightType();"></select><br/>
+			<select name="flightType" id="flightType" onchange="XCUpdateFlightType();LivesharingUpdate();"></select><br/>
 			<hr/>
 			<b>Route:</b>
 			<input type="submit" onclick="XCZoomRoute();" value="&#8853;" title="Show the whole route"/>
@@ -42,6 +42,17 @@
 			<hr/>
 			<b>Preferences:</b>
 			<table>
+				<tr<?php if (!$LIVESHARING) :?> style="display: none"<?php endif; ?>>
+					<td><label for="livesharing">Livesharing:</label></td>
+					<td>
+						<select id="livesharing" onchange="LivesharingOnOff();">
+							<option value="off">Off</option>
+							<option value="channel1">Channel 1</option>
+							<option value="channel2">Channel 2</option>
+							<option value="channel3">Channel 3</option><!--add as much channals as you want-->
+						</select>
+					</td>
+				</tr>
 				<tr<?php if (!$XCONTEST) :?> style="display: none"<?php endif; ?>>
 					<td><label for="airspace">XContest airspace:</label></td>
 					<td><input id="airspace" type="checkbox" onchange="XCUpdateAirspace();"/></td>

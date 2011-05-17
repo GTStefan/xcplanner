@@ -10,7 +10,8 @@ $view = array(
   "location" => isset($_GET["location"]) ? $_GET["location"] : $DEFAULT_LOCATION,
   "flightType" => isset($_GET["flightType"]) ? $_GET["flightType"] : $DEFAULT_FLIGHT_TYPE,
   "turnpoints" => json_encode(isset($_GET["turnpoints"]) ? json_decode($_GET["turnpoints"]) : $DEFAULT_TURNPOINTS),
-  "start" => json_encode(isset($_GET["start"]) ? json_decode($_GET["start"]) : $DEFAULT_START)
+  "start" => json_encode(isset($_GET["start"]) ? json_decode($_GET["start"]) : $DEFAULT_START),
+  "LIVESHARING" => $LIVESHARING
 );
 
 echo view_render("index.tpl", $view);

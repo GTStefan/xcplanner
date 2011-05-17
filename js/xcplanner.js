@@ -46,6 +46,7 @@ var rev = 0;
 var elevationCache = {};
 var airspaceTileLayerOverlay = null;
 var corrTileLayerOverlay = null;
+var isDragActive=0;
 
 var leagues = {
 	"Coupe F\u00e9d\u00e9rale de Distance": {
@@ -744,7 +745,9 @@ function XCUpdateFlightType() {
 		var marker = new GMarker(defaultTurnpointLatLngs[i], {draggable: true, icon: icon});
 		marker.rev = 0;
 		marker.ele = -9999;
-		GEvent.addListener(marker, "drag", function() { XCDragMarker(i); });
+		GEvent.addListener(marker, "drag", function() { isDragActive=1;XCDragMarker(i); });
+		GEvent.addListener(marker, "dragend", function() { LivesharingUpdate();isDragActive=0; });
+		
 		return marker;
 	});
 	if (flightType.circuit) {
@@ -752,7 +755,8 @@ function XCUpdateFlightType() {
 		startMarker = new GMarker(defaultStartLatLng, {draggable: true, icon: icon});
 		startMarker.rev = 0;
 		startMarker.ele = -9999;
-		GEvent.addListener(startMarker, "drag", function() { XCDragMarker(-1); });
+		GEvent.addListener(startMarker, "drag", function() { isDragActive=1;XCDragMarker(-1); });
+		GEvent.addListener(startMarker, "dragend", function() {LivesharingUpdate();isDragActive=0; });
 	} else {
 		startMarker = null;
 	}
@@ -762,6 +766,79 @@ function XCUpdateFlightType() {
 	}
 	XCUpdateRoute();
 	XCUpdateElevations();
+}
+
+function LivesharingOnOff() {
+	try {
+		livesharing_interval=window.clearInterval(livesharing_interval);
+	} catch (err) {}
+	
+	if ($F('livesharing') != "off") {
+		livesharing_interval = window.setInterval("LivesharingRefreshPositions()", 1000);
+	}
+}
+
+function LivesharingRefreshPositions() {
+	if ($F('livesharing') == 'off' || isDragActive) {
+		return;
+	}
+	
+	var url = "livesharing.php";
+	new Ajax.Request(url, {
+		parameters: 'refresh='+$F('livesharing'),
+		method: 'get',
+		onSuccess: function(transport) {
+			var data = transport.responseJSON;
+			
+			if ($("flightType").value != data.flightType) {
+				$("flightType").value = data.flightType;
+				XCUpdateFlightType();
+			}
+			
+			turnpointMarkers.each(function(marker, i) {
+				var latlng = marker.getLatLng();
+				if (latlng.x != data.turnpointMarkers[i].x || latlng.y != data.turnpointMarkers[i].y) {
+					marker.setLatLng(new GLatLng(data.turnpointMarkers[i].y, data.turnpointMarkers[i].x));
+				}
+			});
+			
+			if (data.startMarker) {
+				var latlng = startMarker.getLatLng();
+				if (latlng.x != data.startMarker.x || latlng.y != data.startMarker.y) {
+					startMarker.setLatLng(new GLatLng(data.startMarker.y, data.startMarker.x));
+				}
+			}
+			
+			XCUpdateRoute();
+			XCUpdateElevations();
+		}
+	});
+}
+
+function LivesharingUpdate() {
+	if ($F('livesharing') == 'off') {
+		return;
+	}
+	livesharing_pos = new Object;
+	livesharing_pos['channel'] = $F('livesharing');
+	livesharing_pos['flightType'] = $F("flightType");
+	livesharing_pos['turnpointMarkers'] = Array();
+	turnpointMarkers.each(function(marker, i) {
+		livesharing_pos['turnpointMarkers'].push(marker.getLatLng());
+	});
+	if (startMarker) {
+		livesharing_pos['startMarker'] = startMarker.getLatLng();
+	}
+	
+	var url = "livesharing.php";
+	new Ajax.Request(url, {
+	parameters: 'up_pos='+Object.toJSON(livesharing_pos),
+    method: 'get',
+    onSuccess: function(transport) {
+	  //console.log('ajax_livesharing success!');
+    }
+});
+
 }
 
 function XCLegToTR(flight, i, j) {
